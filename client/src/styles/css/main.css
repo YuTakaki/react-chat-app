@@ -1,0 +1,21 @@
+.App {
+  border: 1px solid black;
+}
+.App .messages {
+  height: 500px;
+  background-color: #e6e6e6;
+}
+.App .handles {
+  display: flex;
+  flex-direction: column;
+}
+.App input {
+  height: 40px;
+  border: 1px solid #868686;
+  outline: none;
+}
+.App button {
+  height: 40px;
+  background-color: cyan;
+  border: none;
+}
