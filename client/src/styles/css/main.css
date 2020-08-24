@@ -19,3 +19,14 @@
   background-color: cyan;
   border: none;
 }
+.App .receiver {
+  color: red;
+  margin: 10px;
+  width: 100%;
+}
+.App .sender {
+  width: 100%;
+  text-align: left;
+  color: blue;
+  margin: 10px;
+}

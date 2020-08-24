@@ -12,6 +12,9 @@ io.on('connection', (socket) => {
     console.log('socket connection', socket.id);
     socket.on('send', data => {
         io.sockets.emit('send', {data, id: socket.id});
+    });
+    socket.on('type', () => {
+        socket.broadcast.emit('type');
     })
 
 })

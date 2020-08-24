@@ -10,11 +10,11 @@ const Chat = React.lazy(() => import('./component/chat'));
 
 const socket = io.connect('http://localhost:4000');
 
-
 class App extends React.Component{
   state = {
     username : '',
     messages : [],
+    current : ''
   }
 
   submit = (message) => {
@@ -24,24 +24,38 @@ class App extends React.Component{
       sender : this.state.username,
       message
     });
+    
+
+    
+  };
+  componentDidMount(){
     socket.on('send', (data) => {
-      console.log(data);
+      this.setState({
+        current : ''
+      })
       let className = 'receiver';
       if(data.id === socket.id){
         className = 'sender'
       }
       this.pushMessages(className, data);
-      console.log(this.state);
+      console.log(this.state)
     });
-  };
+
+    socket.on('type', () => {
+      this.setState((state) => ({
+        current : `${state.username} is typing...`
+      }))
+
+    });
+  }
+  isTyping = () => {
+    socket.emit('type')
+  }
   setUsername = (username) => {
     this.setState({
       username
     });
   };
-  // componentDidUpdate(){
-  //   console.log(this.state);
-  // }
   pushMessages = (className, data) => {
     this.setState((state, props) => ({
       messages : [...state.messages, {
@@ -51,26 +65,14 @@ class App extends React.Component{
       }]
     })); 
   }
-  
-  shouldComponentUpdate(nextProps, nextState) {
-    if(nextProps === this.props){
-      return false
-    }
-    
-  }
-  socket(){
-    
-  }
   render(){
-    
-    this.socket();
-    console.log('a')
+  
     return(
       <div className='App'>
         <Suspense fallback ={<div></div>} >
           <Router>
             <Route exact path = '/' render={(props) => (<Username {...props} setUsername={this.setUsername} />)}/>
-            <Route path = '/chat' render ={(props) => (<Chat {...props} submit={this.submit} state={this.state} />)} />
+            <Route path = '/chat' render ={(props) => (<Chat {...props} submit={this.submit} state={this.state} isTyping = {this.isTyping} />)} />
 
           </Router>
         </Suspense>
